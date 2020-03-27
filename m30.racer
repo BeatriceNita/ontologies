@@ -1,0 +1,40 @@
+(full-reset)
+(in-knowledge-base m30-tbox m30)
+
+(signature :atomic-concepts (Falsification Vegetable COVID-19 Disease Virus)
+           :roles ((treats   :domain Vegetable :range Disease :inverse treated-by)
+                   (protects)
+                   (prevents :domain Vegetable :range Disease :inverse prevented-by)
+                   (causes   :inverse caused-by)
+                  )
+           :attributes ((string has-string))
+           :individuals (m30 garlic)
+)
+; ------------------------------------------------
+; Part 1: True/Trusted/Validated medical knowledge
+; ------------------------------------------------
+(roles-equivalent prevents protects)
+(instance garlic Vegetable)
+(implies Covid-19 (and Disease (all treated-by bottom)))
+
+; ------------------------------------------------------------
+; Part 2: Medical myth manually translated in description logic
+; ------------------------------------------------------------
+(instance m30 (and Falsification (string= has-string "Garlic can protect you against COVID-19")))
+(instance garlic (some protects Covid-19))
+
+
+; ------------------------------------------------------------
+; Part 3: Queries to check incoherence/inconsistency/cycles
+; ------------------------------------------------------------
+(classify-tbox)
+(prepare-abox)
+
+(tbox-cyclic?)
+(tbox-coherent?)
+(check-tbox-coherence)
+
+(abox-consistent?)
+(check-abox-coherence)
+
+
